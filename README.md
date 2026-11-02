@@ -1,2 +1,5 @@
-# dotnet-MAUI-first-assignment-Questionnaire
-Repository for the first assignment of the MAUI course
+# Домашнее задание №1 «Анкета»
+
+MAUI-приложение с анкетой на самостоятельно выбранную тему.
+
+Выполнил: Нестеров А.Д.
