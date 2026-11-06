@@ -120,7 +120,7 @@ public partial class MainPage : ContentPage
             """;
 
         ResultCard.IsVisible = true;
-        await DisplayAlertAsync("Успех", "Лист дегустации успешно сформирован!", "Отлично");
+        await DisplayAlertAsync("Успех", "Форма успешно отправлена! Итоги дегустации можно увидеть ниже.", "Отлично");
     }
 
     private void OnClearFormClicked(object sender, EventArgs e)

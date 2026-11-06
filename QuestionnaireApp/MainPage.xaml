@@ -23,7 +23,7 @@
             </HorizontalStackLayout>
 
             <Image 
-                Source="https://oznatur.de/cdn/shop/articles/teearten-welche-gibt-es.png?v=1782211008"
+                Source="https://admin.thetea.ua/files/styles/blog_page_webp/public/blog/green-oolong-tea-bound-flower.jpg.webp?itok=l8evLHw8"
                 Aspect="AspectFill"
                 HeightRequest="180"
                 HorizontalOptions="Fill"
@@ -39,141 +39,89 @@
 
             <Grid 
                 ColumnDefinitions="*, 1.8*" 
-                RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
+                RowDefinitions="7Row" 
                 RowSpacing="14" 
                 Margin="0,10,0,10">
-                <Label 
-                    Grid.Row="0" Grid.Column="0" 
-                    Text="Дегустатор:" 
-                    VerticalOptions="Center" 
-                    FontAttributes="Bold"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Border 
-                    Grid.Row="0" Grid.Column="1"
-                    StrokeShape="RoundRectangle 6"
-                    StrokeThickness="1"
-                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
-                    BackgroundColor="Transparent"
-                    Padding="8,2">
-                    <Entry 
+                <Label Grid.Row="0" Grid.Column="0" Text="Дегустатор:" Style="{StaticResource FormLabelStyle}"/>
+                <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
+                   <Entry 
                         x:Name="TesterNameEntry" 
                         Placeholder="Ваше имя" 
                         MaxLength="25" 
                         Keyboard="Text"
                         TextChanged="OnRequiredFieldsChanged"
-                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                        PlaceholderColor="Gray"/>
+                        Style="{StaticResource FieldEntryStyle}"/>
                 </Border>
                 
-                <Label 
-                    Grid.Row="1" Grid.Column="0" 
-                    Text="Почта:" 
-                    VerticalOptions="Center" 
-                    FontAttributes="Bold"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Border 
-                    Grid.Row="1" Grid.Column="1"
-                    StrokeShape="RoundRectangle 6"
-                    StrokeThickness="1"
-                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
-                    BackgroundColor="Transparent"
-                    Padding="8,2">
+                <Label Grid.Row="1" Grid.Column="0" Text="Почта:" Style="{StaticResource FormLabelStyle}"/>
+                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
                     <Entry 
                         x:Name="TesterEmailEntry" 
                         Placeholder="example@mail.com" 
                         MaxLength="50" 
                         Keyboard="Email"
                         TextChanged="OnRequiredFieldsChanged"
-                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                        PlaceholderColor="Gray"/>
+                        Style="{StaticResource FieldEntryStyle}"/> 
                 </Border>
 
-                <Label 
-                    Grid.Row="2" Grid.Column="0" 
-                    Text="Дата сессии:" 
-                    VerticalOptions="Center"
-                    FontAttributes="Bold"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                <Label Grid.Row="2" Grid.Column="0" Text="Дата сессии:" Style="{StaticResource FormLabelStyle}"/>
                 <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*, Auto">
-                    <Border 
-                        Grid.Column="0"
-                        StrokeShape="RoundRectangle 6"
-                        StrokeThickness="1"
-                        Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
-                        BackgroundColor="Transparent"
-                        Padding="8,2">
+                    <Border Grid.Column="0" Style="{StaticResource FieldBorderStyle}">
                         <Entry 
                             x:Name="DateEntry"
                             Placeholder="ДД.ММ.ГГГГ"
                             Keyboard="Telephone"
                             MaxLength="10"
-                            TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                            PlaceholderColor="Gray"/>
+                            Style="{StaticResource FieldEntryStyle}"/>
                     </Border>
 
-                    <Button 
+                    <Border 
                         Grid.Column="1"
-                        Text="📅"
-                        WidthRequest="45"
-                        HeightRequest="40"
-                        Margin="5,0,0,0"
+                        StrokeShape="RoundRectangle 6"
+                        StrokeThickness="1"
+                        Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
                         BackgroundColor="Transparent"
-                        TextColor="#FF8C00"
-                        Clicked="OnCalendarButtonClicked"/>
-
-                    <DatePicker 
-                        Grid.Column="1"
-                        x:Name="HiddenDatePicker"
-                        IsVisible="True"
-                        Opacity="0"
-                        WidthRequest="45"
-                        HeightRequest="40"
                         Margin="5,0,0,0"
-                        Format="dd.MM.yyyy"
-                        MinimumDate="10/01/2026"
-                        MaximumDate="12/31/2026"
-                        DateSelected="OnDateSelectedFromCalendar"/>
+                        Padding="0"
+                        WidthRequest="45"
+                        HeightRequest="40">
+                        <Grid>
+                            <Button 
+                                Text="📅"
+                                WidthRequest="45"
+                                HeightRequest="40"
+                                BackgroundColor="Transparent"
+                                TextColor="#FF8C00"
+                                Clicked="OnCalendarButtonClicked"/>
+
+                            <DatePicker 
+                                x:Name="HiddenDatePicker"
+                                IsVisible="True"
+                                Opacity="0"
+                                WidthRequest="45"
+                                HeightRequest="40"
+                                Format="dd.MM.yyyy"
+                                MinimumDate="10/01/2026"
+                                MaximumDate="12/31/2026"
+                                DateSelected="OnDateSelectedFromCalendar"/>
+                        </Grid>
+                    </Border>
                 </Grid>
 
-                <Label 
-                    Grid.Row="3" Grid.Column="0" 
-                    Text="Сорт чая:" 
-                    VerticalOptions="Center" 
-                    FontAttributes="Bold"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Border 
-                    Grid.Row="3" Grid.Column="1"
-                    StrokeShape="RoundRectangle 6"
-                    StrokeThickness="1"
-                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
-                    BackgroundColor="Transparent"
-                    Padding="8,2">
+                <Label Grid.Row="3" Grid.Column="0" Text="Сорт чая:" Style="{StaticResource FormLabelStyle}"/>
+                <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
                     <Entry 
                         x:Name="TeaNameEntry" 
                         Placeholder="Например, Гекуро" 
                         MaxLength="40" 
                         Keyboard="Plain"
                         TextChanged="OnRequiredFieldsChanged"
-                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                        PlaceholderColor="Gray"/>
+                        Style="{StaticResource FieldEntryStyle}"/>
                 </Border>
 
-                <Label 
-                    Grid.Row="4" Grid.Column="0" 
-                    Text="Вид чая:" 
-                    VerticalOptions="Center"
-                    FontAttributes="Bold"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Border 
-                    Grid.Row="4" Grid.Column="1"
-                    StrokeShape="RoundRectangle 6"
-                    StrokeThickness="1"
-                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
-                    BackgroundColor="Transparent"
-                    Padding="8,2">
-                    <Picker 
-                        x:Name="TeaTypePicker" 
-                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}">
+                <Label Grid.Row="4" Grid.Column="0" Text="Вид чая:" Style="{StaticResource FormLabelStyle}"/>
+                <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
+                    <Picker x:Name="TeaTypePicker" TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>Выберите вид...</x:String>
@@ -188,22 +136,9 @@
                     </Picker>
                 </Border>
 
-                <Label 
-                    Grid.Row="5" Grid.Column="0" 
-                    Text="Метод варки:" 
-                    VerticalOptions="Center"
-                    FontAttributes="Bold"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Border 
-                    Grid.Row="5" Grid.Column="1"
-                    StrokeShape="RoundRectangle 6"
-                    StrokeThickness="1"
-                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
-                    BackgroundColor="Transparent"
-                    Padding="8,2">
-                    <Picker 
-                        x:Name="BrewMethodPicker"
-                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}">
+                <Label Grid.Row="5" Grid.Column="0" Text="Метод варки:" Style="{StaticResource FormLabelStyle}"/>
+                <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
+                    <Picker x:Name="BrewMethodPicker" TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}">
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>Выберите метод...</x:String>
@@ -215,12 +150,7 @@
                     </Picker>
                 </Border>
 
-                <Label 
-                    Grid.Row="6" Grid.Column="0" 
-                    Text="Ваша оценка:" 
-                    VerticalOptions="Center"
-                    FontAttributes="Bold"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                <Label Grid.Row="6" Grid.Column="0" Text="Ваша оценка:" Style="{StaticResource FormLabelStyle}"/>
                 <VerticalStackLayout Grid.Row="6" Grid.Column="1" Spacing="2">
                     <Slider 
                         x:Name="ScoreSlider" 
@@ -229,53 +159,39 @@
                         Value="5"
                         ThumbColor="Orange"
                         MinimumTrackColor="Orange"
-                        MaximumTrackColor="{AppThemeBinding Light=#E5E5EA, Dark=#3A3A3C}"/> <!-- Добавлен цвет для неактивного трека -->
+                        MaximumTrackColor="{AppThemeBinding Light=#E5E5EA, Dark=#3A3A3C}"/>
                     <Label 
-                        Text="{Binding Source={x:Reference ScoreSlider}, Path=Value, StringFormat='Итоговый балл: {0:F0} из 10'}" 
+                        Text="{Binding Source={x:Reference ScoreSlider}, Path=Value, Mode=OneWay, StringFormat='Итоговый балл: {0:F0} из 10'}" 
                         FontSize="12" 
                         TextColor="Orange" 
                         FontAttributes="Italic"/>
                 </VerticalStackLayout>
             </Grid>
 
-            <Label 
-                Text="Эффект от чаепития:" 
-                FontAttributes="Bold" 
-                Margin="0,5,0,2"
-                TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+            <Label Text="Эффект от чаепития:" Style="{StaticResource FormLabelStyle}" Margin="0,5,0,2"/>
             <VerticalStackLayout Spacing="6" Margin="5,0,0,10">
-                <HorizontalStackLayout Spacing="8">
-                    <RadioButton 
-                        x:Name="BodrostRadio"
-                        Content="Бодрость" 
-                        GroupName="TeaEffect" 
-                        Value="Бодрость" 
-                        IsChecked="True"
-                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout Spacing="8">
-                    <RadioButton 
-                        x:Name="FocusRadio" 
-                        Content="Концентрация" 
-                        GroupName="TeaEffect" 
-                        Value="Концентрация"
-                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout Spacing="8">
-                    <RadioButton 
-                        x:Name="RelaxRadio"
-                        Content="Расслабление" 
-                        GroupName="TeaEffect" 
-                        Value="Расслабление"
-                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                </HorizontalStackLayout>
+                <RadioButton 
+                    x:Name="BodrostRadio"
+                    Content="Бодрость" 
+                    GroupName="TeaEffect" 
+                    Value="Бодрость" 
+                    IsChecked="True"
+                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                <RadioButton 
+                    x:Name="FocusRadio" 
+                    Content="Концентрация" 
+                    GroupName="TeaEffect" 
+                    Value="Концентрация"
+                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                <RadioButton 
+                    x:Name="RelaxRadio"
+                    Content="Расслабление" 
+                    GroupName="TeaEffect" 
+                    Value="Расслабление"
+                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
             </VerticalStackLayout>
 
-            <Label 
-                Text="Использованные добавки:" 
-                FontAttributes="Bold" 
-                Margin="0,5,0,2"
-                TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+            <Label Text="Использованные добавки:" Style="{StaticResource FormLabelStyle}" Margin="0,5,0,2"/>
             <VerticalStackLayout Spacing="4" Margin="5,0,0,10">
                 <HorizontalStackLayout Spacing="8">
                     <CheckBox x:Name="SugarCheckBox" Color="Orange"/>
@@ -314,17 +230,8 @@
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
-            <Label 
-                Text="Дегустационные заметки:" 
-                FontAttributes="Bold"
-                Margin="0,0,0,6"
-                TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-            <Border 
-                StrokeShape="RoundRectangle 6"
-                StrokeThickness="1"
-                Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
-                BackgroundColor="Transparent"
-                Padding="8,2">
+            <Label Text="Дегустационные заметки:" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,6"/>
+            <Border Style="{StaticResource FieldBorderStyle}">
                 <Editor 
                     x:Name="ReviewEditor" 
                     Placeholder="Опишите нотки послевкусия, терпкость, плотность..." 
@@ -369,7 +276,7 @@
                 Margin="0,10,0,20">
                 <VerticalStackLayout Spacing="6">
                     <Label 
-                        Text="📋 Итоговый Лист Дегустации:" 
+                        Text="📋 Итоги дегустации:" 
                         FontAttributes="Bold" 
                         FontSize="16" 
                         TextColor="Orange"/>

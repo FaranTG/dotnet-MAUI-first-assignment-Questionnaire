@@ -431,4 +431,23 @@
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
 
+    <Style x:Key="FieldBorderStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 6" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light=#CCCCCC, Dark=#444446}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Padding" Value="8,2" />
+    </Style>
+
+    <Style x:Key="FormLabelStyle" TargetType="Label">
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}" />
+    </Style>
+
+    <Style x:Key="FieldEntryStyle" TargetType="Entry">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+        <Setter Property="PlaceholderColor" Value="Gray" />
+    </Style>
+
 </ResourceDictionary>
