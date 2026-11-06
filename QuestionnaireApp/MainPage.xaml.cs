@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace QuestionnaireApp;
+﻿namespace QuestionnaireApp;
 
 public partial class MainPage : ContentPage
 {
@@ -8,6 +6,11 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         ThemeSwitch.IsToggled = Application.Current?.RequestedTheme == AppTheme.Dark;
+
+        TeaTypePicker.SelectedIndex = 0;
+        BrewMethodPicker.SelectedIndex = 0;
+
+        ValidateForm();
     }
 
     private void OnThemeToggled(object sender, ToggledEventArgs e)
@@ -15,77 +18,133 @@ public partial class MainPage : ContentPage
         Application.Current?.UserAppTheme = e.Value ? AppTheme.Dark : AppTheme.Light;
     }
 
-    private async void OnSubmitFormClicked(object sender, EventArgs e)
+    private void OnCalendarButtonClicked(object sender, EventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(TesterNameEntry.Text) || string.IsNullOrWhiteSpace(TeaNameEntry.Text))
+        MainThread.BeginInvokeOnMainThread(() =>
         {
-            await DisplayAlertAsync("Ошибка валидации", "Пожалуйста, заполните обязательные поля:\n• Дегустатор\n• Сорт чая", "ОК");
-            return;
+            HiddenDatePicker.Unfocus(); 
+            HiddenDatePicker.Focus();
+        });
+    }
+
+    private void OnDateSelectedFromCalendar(object sender, DateChangedEventArgs e)
+    {
+        DateEntry.Text = (e.NewDate ?? DateTime.Today).ToString("dd.MM.yyyy");
+    }
+
+    private void OnRequiredFieldsChanged(object sender, TextChangedEventArgs e)
+    {
+        ValidateForm();
+    }
+
+    private void OnLabelTapped(object sender, TappedEventArgs e)
+    {
+        if (e.Parameter is CheckBox checkBox)
+        {
+            checkBox.IsChecked = !checkBox.IsChecked;
+        }
+    }
+
+    private void ValidateForm()
+    {
+        bool isTesterFilled = !string.IsNullOrWhiteSpace(TesterNameEntry?.Text);
+        bool isEmailFilled = !string.IsNullOrWhiteSpace(TesterEmailEntry?.Text);
+        bool isTeaFilled = !string.IsNullOrWhiteSpace(TeaNameEntry?.Text);
+
+        TesterNameEntry?.PlaceholderColor = isTesterFilled ? Colors.Gray :  Colors.Red;
+        TesterEmailEntry?.PlaceholderColor = isEmailFilled ? Colors.Gray :  Colors.Red;
+        TeaNameEntry?.PlaceholderColor = isTeaFilled ? Colors.Gray :  Colors.Red;
+        
+        bool isFormValid = isTesterFilled && isEmailFilled && isTeaFilled;
+
+        if (SubmitButton != null)
+        {
+            SubmitButton.IsEnabled = isFormValid;
+            SubmitButton.BackgroundColor = isFormValid 
+                ? Colors.Orange 
+                : Color.FromArgb("#AEAEB2");
         }
 
-        string testerName = TesterNameEntry.Text?.Trim() ?? string.Empty;
-        string teaName = TeaNameEntry.Text?.Trim() ?? string.Empty;
-        string tastingDate = TastingDatePicker.Date?.ToString("dd.MM.yyyy") ?? DateTime.Today.ToString("dd.MM.yyyy");
+        ValidationWarningLabel?.IsVisible = !isFormValid;
+    }
 
-        string teaType = TeaTypePicker.SelectedItem?.ToString() ?? "Не указан";
-        string brewMethod = BrewMethodPicker.SelectedItem?.ToString() ?? "Не указан";
+    private async void OnSubmitFormClicked(object sender, EventArgs e)
+    {
+        string testerName = TesterNameEntry.Text.Trim();
+        string testerEmail = TesterEmailEntry.Text.Trim();
+        string teaName = TeaNameEntry.Text.Trim();
+        
+        string tastingDate = string.IsNullOrWhiteSpace(DateEntry.Text) 
+            ? DateTime.Today.ToString("dd.MM.yyyy") 
+            : DateEntry.Text.Trim();
+
+        string teaType = TeaTypePicker.SelectedIndex > 0 
+            ? TeaTypePicker.SelectedItem?.ToString() ?? "Не указан" 
+            : "Не указан";
+
+        string brewMethod = BrewMethodPicker.SelectedIndex > 0 
+            ? BrewMethodPicker.SelectedItem?.ToString() ?? "Не указан" 
+            : "Не указан";
 
         int finalScore = (int)Math.Round(ScoreSlider.Value);
 
-        string teaEffect = "Не выбрано";
-        if (BodrostRadio.IsChecked) teaEffect = "Бодрость / Физический тонус";
-        else if (FocusRadio.IsChecked) teaEffect = "Фокус / Концентрация";
-        else if (RelaxRadio.IsChecked) teaEffect = "Расслабление / Медитация";
+        string teaEffect = BodrostRadio.IsChecked
+            ? "Бодрость"
+            : FocusRadio.IsChecked
+                ? "Концентрация"
+                : "Расслабление";
 
-        var supplements = new List<string>();
-        if (SugarCheckBox.IsChecked) supplements.Add("Подсластитель (Сахар/Мед)");
-        if (MilkCheckBox.IsChecked) supplements.Add("Молоко/Сливки");
-        if (LemonCheckBox.IsChecked) supplements.Add("Лимон/Цитрус");
+        List<string> supplements = [];
+        if (SugarCheckBox.IsChecked) supplements.Add("Подсластитель");
+        if (MilkCheckBox.IsChecked) supplements.Add("Молоко");
+        if (LemonCheckBox.IsChecked) supplements.Add("Лимон");
 
         string supplementsResult = supplements.Count > 0 
             ? string.Join(", ", supplements) 
-            : "Чистый вкус (без добавок)";
+            : "-";
 
         string reviewNotes = string.IsNullOrWhiteSpace(ReviewEditor.Text) 
-            ? "Заметки отсутствуют." 
+            ? "-" 
             : ReviewEditor.Text.Trim();
 
-        var summary = new StringBuilder();
-        summary.AppendLine($"Сомелье: {testerName}");
-        summary.AppendLine($"Дата сессии: {tastingDate}");
-        summary.AppendLine($"Оцениваемый сорт: {teaName}");
-        summary.AppendLine($"Категория: {teaType}");
-        summary.AppendLine($"Способ заварки: {brewMethod}");
-        summary.AppendLine($"Оценка вкуса: {finalScore} из 10");
-        summary.AppendLine($"Эффект: {teaEffect}");
-        summary.AppendLine($"Добавки: {supplementsResult}");
-        summary.AppendLine($"Заметки: {reviewNotes}");
+        ResultSummaryLabel.Text = $"""
+            Дегустатор: {testerName} ({testerEmail})
+            Дата сессии: {tastingDate}
+            Оцениваемый сорт: {teaName}
+            Категория: {teaType}
+            Способ заварки: {brewMethod}
+            Оценка вкуса: {finalScore} из 10
+            Эффект: {teaEffect}
+            Добавки: {supplementsResult}
+            Заметки: {reviewNotes}
+            """;
 
-        ResultSummaryLabel.Text = summary.ToString();
         ResultCard.IsVisible = true;
-
         await DisplayAlertAsync("Успех", "Лист дегустации успешно сформирован!", "Отлично");
     }
 
     private void OnClearFormClicked(object sender, EventArgs e)
     {
         TesterNameEntry.Text = string.Empty;
+        TesterEmailEntry.Text = string.Empty;
         TeaNameEntry.Text = string.Empty;
         ReviewEditor.Text = string.Empty;
+        DateEntry.Text = string.Empty;
 
-        TeaTypePicker.SelectedIndex = -1;
-        BrewMethodPicker.SelectedIndex = -1;
+        TeaTypePicker.SelectedIndex = 0;
+        BrewMethodPicker.SelectedIndex = 0;
 
-        TastingDatePicker.Date = DateTime.Today;
+        HiddenDatePicker.Date = DateTime.Today;
         ScoreSlider.Value = 5;
 
         BodrostRadio.IsChecked = true;
-
         SugarCheckBox.IsChecked = false;
         MilkCheckBox.IsChecked = false;
         LemonCheckBox.IsChecked = false;
 
         ResultCard.IsVisible = false;
         ResultSummaryLabel.Text = string.Empty;
+
+        ValidateForm();
     }
 }

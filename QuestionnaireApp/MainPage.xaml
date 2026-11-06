@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="QuestionnaireApp.MainPage"
     Title="Чайный Сомелье"
+    Shell.TitleColor="#FF8C00"
+    Shell.BackgroundColor="Gray"
     BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1C1C1E}">
 
     <ScrollView Padding="20">
         <VerticalStackLayout Spacing="18">
-            
             <HorizontalStackLayout HorizontalOptions="End" Spacing="8" Margin="0,0,0,10">
                 <Label 
                     Text="Тёмная тема:" 
@@ -17,19 +18,19 @@
                     TextColor="{AppThemeBinding Light=#3A3A3C, Dark=#E5E5EA}"/>
                 <Switch 
                     x:Name="ThemeSwitch" 
-                    OnColor="Green" 
+                    OnColor="Orange" 
                     Toggled="OnThemeToggled"/>
             </HorizontalStackLayout>
 
             <Image 
-                Source="https://storage01.tea.ru/iblock/e9d/e9d4876c4fcb38ac765536bebfea531d/65083b09d5ae487f4975a1e3a76022c5_80.jpg"
+                Source="https://oznatur.de/cdn/shop/articles/teearten-welche-gibt-es.png?v=1782211008"
                 Aspect="AspectFill"
                 HeightRequest="180"
                 HorizontalOptions="Fill"
                 Margin="0,0,0,10"/>
 
             <Label 
-                Text="Анкета Дегустации Чайных Сортов" 
+                Text="Анкета дегустации чайных сортов" 
                 FontSize="22" 
                 FontAttributes="Bold" 
                 TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"
@@ -38,185 +39,311 @@
 
             <Grid 
                 ColumnDefinitions="*, 1.8*" 
-                RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto" 
+                RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
                 RowSpacing="14" 
                 Margin="0,10,0,10">
-                
                 <Label 
                     Grid.Row="0" Grid.Column="0" 
                     Text="Дегустатор:" 
                     VerticalOptions="Center" 
                     FontAttributes="Bold"
                     TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Entry 
-                    Grid.Row="0" Grid.Column="1" 
-                    x:Name="TesterNameEntry" 
-                    Placeholder="Ваше имя" 
-                    MaxLength="25" 
-                    Keyboard="Text"
-                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                    PlaceholderColor="Gray"/>
-
+                <Border 
+                    Grid.Row="0" Grid.Column="1"
+                    StrokeShape="RoundRectangle 6"
+                    StrokeThickness="1"
+                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
+                    BackgroundColor="Transparent"
+                    Padding="8,2">
+                    <Entry 
+                        x:Name="TesterNameEntry" 
+                        Placeholder="Ваше имя" 
+                        MaxLength="25" 
+                        Keyboard="Text"
+                        TextChanged="OnRequiredFieldsChanged"
+                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        PlaceholderColor="Gray"/>
+                </Border>
+                
                 <Label 
                     Grid.Row="1" Grid.Column="0" 
-                    Text="Дата сессии:" 
-                    VerticalOptions="Center"
+                    Text="Почта:" 
+                    VerticalOptions="Center" 
+                    FontAttributes="Bold"
                     TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <DatePicker 
-                    Grid.Row="1" Grid.Column="1" 
-                    x:Name="TastingDatePicker" 
-                    Format="dd.MM.yyyy"
-                    MinimumDate="2020-01-01"
-                    MaximumDate="2030-12-31"
-                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"/>
+                <Border 
+                    Grid.Row="1" Grid.Column="1"
+                    StrokeShape="RoundRectangle 6"
+                    StrokeThickness="1"
+                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
+                    BackgroundColor="Transparent"
+                    Padding="8,2">
+                    <Entry 
+                        x:Name="TesterEmailEntry" 
+                        Placeholder="example@mail.com" 
+                        MaxLength="50" 
+                        Keyboard="Email"
+                        TextChanged="OnRequiredFieldsChanged"
+                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        PlaceholderColor="Gray"/>
+                </Border>
 
                 <Label 
                     Grid.Row="2" Grid.Column="0" 
+                    Text="Дата сессии:" 
+                    VerticalOptions="Center"
+                    FontAttributes="Bold"
+                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*, Auto">
+                    <Border 
+                        Grid.Column="0"
+                        StrokeShape="RoundRectangle 6"
+                        StrokeThickness="1"
+                        Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
+                        BackgroundColor="Transparent"
+                        Padding="8,2">
+                        <Entry 
+                            x:Name="DateEntry"
+                            Placeholder="ДД.ММ.ГГГГ"
+                            Keyboard="Telephone"
+                            MaxLength="10"
+                            TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                            PlaceholderColor="Gray"/>
+                    </Border>
+
+                    <Button 
+                        Grid.Column="1"
+                        Text="📅"
+                        WidthRequest="45"
+                        HeightRequest="40"
+                        Margin="5,0,0,0"
+                        BackgroundColor="Transparent"
+                        TextColor="#FF8C00"
+                        Clicked="OnCalendarButtonClicked"/>
+
+                    <DatePicker 
+                        Grid.Column="1"
+                        x:Name="HiddenDatePicker"
+                        IsVisible="True"
+                        Opacity="0"
+                        WidthRequest="45"
+                        HeightRequest="40"
+                        Margin="5,0,0,0"
+                        Format="dd.MM.yyyy"
+                        MinimumDate="10/01/2026"
+                        MaximumDate="12/31/2026"
+                        DateSelected="OnDateSelectedFromCalendar"/>
+                </Grid>
+
+                <Label 
+                    Grid.Row="3" Grid.Column="0" 
                     Text="Сорт чая:" 
                     VerticalOptions="Center" 
                     FontAttributes="Bold"
                     TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Entry 
-                    Grid.Row="2" Grid.Column="1" 
-                    x:Name="TeaNameEntry" 
-                    Placeholder="Например, Да Хун Пао" 
-                    MaxLength="40" 
-                    Keyboard="Text"
-                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                    PlaceholderColor="Gray"/>
-
-                <Label 
-                    Grid.Row="3" Grid.Column="0" 
-                    Text="Вид чая:" 
-                    VerticalOptions="Center"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Picker 
-                    Grid.Row="3" Grid.Column="1" 
-                    x:Name="TeaTypePicker" 
-                    Title="Выберите категорию"
-                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                    TitleColor="Gray">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Зелёный чай</x:String>
-                            <x:String>Белый чай</x:String>
-                            <x:String>Улуны (Светлые / Тёмные)</x:String>
-                            <x:String>Пуэры (Шу / Шен)</x:String>
-                            <x:String>Красный (Черный по-европейски)</x:String>
-                            <x:String>Тизаны / Травяные сборы</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
+                <Border 
+                    Grid.Row="3" Grid.Column="1"
+                    StrokeShape="RoundRectangle 6"
+                    StrokeThickness="1"
+                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
+                    BackgroundColor="Transparent"
+                    Padding="8,2">
+                    <Entry 
+                        x:Name="TeaNameEntry" 
+                        Placeholder="Например, Гекуро" 
+                        MaxLength="40" 
+                        Keyboard="Plain"
+                        TextChanged="OnRequiredFieldsChanged"
+                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                        PlaceholderColor="Gray"/>
+                </Border>
 
                 <Label 
                     Grid.Row="4" Grid.Column="0" 
-                    Text="Метод варки:" 
+                    Text="Вид чая:" 
                     VerticalOptions="Center"
+                    FontAttributes="Bold"
                     TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <Picker 
-                    Grid.Row="4" Grid.Column="1" 
-                    x:Name="BrewMethodPicker" 
-                    Title="Как заваривали?"
-                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                    TitleColor="Gray">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Китайский пролив</x:String>
-                            <x:String>Настаивание в чайнике</x:String>
-                            <x:String>Бумажный стаканчик</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
+                <Border 
+                    Grid.Row="4" Grid.Column="1"
+                    StrokeShape="RoundRectangle 6"
+                    StrokeThickness="1"
+                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
+                    BackgroundColor="Transparent"
+                    Padding="8,2">
+                    <Picker 
+                        x:Name="TeaTypePicker" 
+                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Выберите вид...</x:String>
+                                <x:String>Зелёный</x:String>
+                                <x:String>Черный</x:String>
+                                <x:String>Белый</x:String>
+                                <x:String>Улун</x:String>
+                                <x:String>Пуэр</x:String>
+                                <x:String>Тизан</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Border>
 
                 <Label 
                     Grid.Row="5" Grid.Column="0" 
+                    Text="Метод варки:" 
+                    VerticalOptions="Center"
+                    FontAttributes="Bold"
+                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                <Border 
+                    Grid.Row="5" Grid.Column="1"
+                    StrokeShape="RoundRectangle 6"
+                    StrokeThickness="1"
+                    Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
+                    BackgroundColor="Transparent"
+                    Padding="8,2">
+                    <Picker 
+                        x:Name="BrewMethodPicker"
+                        TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Выберите метод...</x:String>
+                                <x:String>Китайский пролив</x:String>
+                                <x:String>Настаивание в чайнике</x:String>
+                                <x:String>Бумажный стаканчик</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Border>
+
+                <Label 
+                    Grid.Row="6" Grid.Column="0" 
                     Text="Ваша оценка:" 
                     VerticalOptions="Center"
+                    FontAttributes="Bold"
                     TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <VerticalStackLayout Grid.Row="5" Grid.Column="1" Spacing="2">
+                <VerticalStackLayout Grid.Row="6" Grid.Column="1" Spacing="2">
                     <Slider 
                         x:Name="ScoreSlider" 
                         Minimum="1" 
                         Maximum="10" 
-                        Value="5" />
+                        Value="5"
+                        ThumbColor="Orange"
+                        MinimumTrackColor="Orange"
+                        MaximumTrackColor="{AppThemeBinding Light=#E5E5EA, Dark=#3A3A3C}"/> <!-- Добавлен цвет для неактивного трека -->
                     <Label 
                         Text="{Binding Source={x:Reference ScoreSlider}, Path=Value, StringFormat='Итоговый балл: {0:F0} из 10'}" 
                         FontSize="12" 
-                        TextColor="Green" 
+                        TextColor="Orange" 
                         FontAttributes="Italic"/>
                 </VerticalStackLayout>
             </Grid>
 
             <Label 
-                Text="Чайное состояние (Эффект):" 
+                Text="Эффект от чаепития:" 
                 FontAttributes="Bold" 
                 Margin="0,5,0,2"
                 TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
             <VerticalStackLayout Spacing="6" Margin="5,0,0,10">
-                <RadioButton 
-                    x:Name="BodrostRadio"
-                    Content="Бодрость / Активный физический тонус" 
-                    GroupName="TeaEffect" 
-                    Value="Бодрость" 
-                    IsChecked="True"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <RadioButton 
-                    x:Name="FocusRadio" 
-                    Content="Фокус / Ясность ума и концентрация" 
-                    GroupName="TeaEffect" 
-                    Value="Фокус"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-                <RadioButton 
-                    x:Name="RelaxRadio"
-                    Content="Расслабление / Ментальная медитация" 
-                    GroupName="TeaEffect" 
-                    Value="Расслабление"
-                    TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                <HorizontalStackLayout Spacing="8">
+                    <RadioButton 
+                        x:Name="BodrostRadio"
+                        Content="Бодрость" 
+                        GroupName="TeaEffect" 
+                        Value="Бодрость" 
+                        IsChecked="True"
+                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="8">
+                    <RadioButton 
+                        x:Name="FocusRadio" 
+                        Content="Концентрация" 
+                        GroupName="TeaEffect" 
+                        Value="Концентрация"
+                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Spacing="8">
+                    <RadioButton 
+                        x:Name="RelaxRadio"
+                        Content="Расслабление" 
+                        GroupName="TeaEffect" 
+                        Value="Расслабление"
+                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                </HorizontalStackLayout>
             </VerticalStackLayout>
 
             <Label 
-                Text="Использованные добавки (исказители вкуса):" 
+                Text="Использованные добавки:" 
                 FontAttributes="Bold" 
                 Margin="0,5,0,2"
                 TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
             <VerticalStackLayout Spacing="4" Margin="5,0,0,10">
                 <HorizontalStackLayout Spacing="8">
-                    <CheckBox x:Name="SugarCheckBox" Color="Red"/>
+                    <CheckBox x:Name="SugarCheckBox" Color="Orange"/>
                     <Label 
-                        Text="Подсластитель (Сахар / Сироп / Мёд)" 
+                        Text="Подсластитель" 
                         VerticalOptions="Center" 
-                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnLabelTapped" CommandParameter="{x:Reference SugarCheckBox}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
                 </HorizontalStackLayout>
+                
                 <HorizontalStackLayout Spacing="8">
-                    <CheckBox x:Name="MilkCheckBox" Color="Blue"/>
+                    <CheckBox x:Name="MilkCheckBox" Color="Orange"/>
                     <Label 
-                        Text="Молоко / Сливки" 
+                        Text="Молоко" 
                         VerticalOptions="Center" 
-                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnLabelTapped" CommandParameter="{x:Reference MilkCheckBox}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
                 </HorizontalStackLayout>
+                
                 <HorizontalStackLayout Spacing="8">
-                    <CheckBox x:Name="LemonCheckBox" Color="Yellow"/>
+                    <CheckBox x:Name="LemonCheckBox" Color="Orange"/>
                     <Label 
-                        Text="Лимон / Цитрусовый сок" 
+                        Text="Лимон" 
                         VerticalOptions="Center" 
-                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
+                        TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnLabelTapped" CommandParameter="{x:Reference LemonCheckBox}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
             <Label 
-                Text="Дегустационные заметки (аромат, вкус, профиль):" 
+                Text="Дегустационные заметки:" 
                 FontAttributes="Bold"
+                Margin="0,0,0,6"
                 TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
-            <Editor 
-                x:Name="ReviewEditor" 
-                Placeholder="Опишите нотки послевкусия, терпкость, плотность..." 
-                HeightRequest="90" 
-                AutoSize="TextChanges" 
-                MaxLength="300"
-                TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                PlaceholderColor="Gray"/>
+            <Border 
+                StrokeShape="RoundRectangle 6"
+                StrokeThickness="1"
+                Stroke="{AppThemeBinding Light=#CCCCCC, Dark=#444446}"
+                BackgroundColor="Transparent"
+                Padding="8,2">
+                <Editor 
+                    x:Name="ReviewEditor" 
+                    Placeholder="Опишите нотки послевкусия, терпкость, плотность..." 
+                    HeightRequest="90" 
+                    AutoSize="TextChanges" 
+                    MaxLength="300"
+                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                    PlaceholderColor="Gray"/>
+            </Border>
 
-            <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0,15,0,10">
+            <Label 
+                x:Name="ValidationWarningLabel"
+                Text="Для отправки заполните обязательные поля: дегустатор, почта, сорт чая"
+                TextColor="Red"
+                FontSize="12"
+                HorizontalOptions="Center"
+                Margin="0,15,0,0"/>
+
+            <Grid ColumnDefinitions="*, *" ColumnSpacing="15" Margin="0,5,0,10">
                 <Button 
                     Grid.Column="0" 
                     Text="Очистить форму" 
@@ -225,16 +352,16 @@
                     TextColor="White"/>
                 <Button 
                     Grid.Column="1" 
+                    x:Name="SubmitButton"
                     Text="Отправить" 
                     Clicked="OnSubmitFormClicked" 
-                    BackgroundColor="Green" 
-                    TextColor="White"/>
+                    TextColor="White" />
             </Grid>
 
             <Border 
                 x:Name="ResultCard" 
                 IsVisible="False" 
-                Stroke="Green" 
+                Stroke="Orange" 
                 StrokeThickness="2" 
                 StrokeShape="RoundRectangle 10" 
                 Padding="15" 
@@ -245,7 +372,7 @@
                         Text="📋 Итоговый Лист Дегустации:" 
                         FontAttributes="Bold" 
                         FontSize="16" 
-                        TextColor="Green"/>
+                        TextColor="Orange"/>
                     <Label 
                         x:Name="ResultSummaryLabel" 
                         Text="" 
@@ -253,7 +380,6 @@
                         TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
                 </VerticalStackLayout>
             </Border>
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
