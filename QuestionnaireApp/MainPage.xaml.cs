@@ -9,11 +9,12 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         ThemeSwitch.IsToggled = Application.Current?.RequestedTheme == AppTheme.Dark;
 
+        SetCurrentDate();
         ResetPickers();
         ValidateForm();
     }
 
-    private void OnThemeToggled(object sender, ToggledEventArgs e)
+    private void OnThemeToggled(object? sender, ToggledEventArgs e)
     {
         Application.Current?.UserAppTheme = e.Value ? AppTheme.Dark : AppTheme.Light;
     }
@@ -41,6 +42,12 @@ public partial class MainPage : ContentPage
         }
     }
 
+    private void SetCurrentDate()
+    {
+        DateEntry.Text = DateTime.Today.ToString("dd.MM.yyyy");
+        HiddenDatePicker.Date = DateTime.Today;
+    }
+
     private void ValidateForm()
     {
         bool isTesterFilled = !string.IsNullOrWhiteSpace(TesterNameEntry?.Text);
@@ -53,15 +60,22 @@ public partial class MainPage : ContentPage
         
         bool isFormValid = isTesterFilled && isEmailFilled && isTeaFilled;
 
+        TryEnableSubmitButton(isFormValid);
+        ValidationWarningLabel?.IsVisible = !isFormValid;
+    }
+
+    private void TryEnableSubmitButton(bool isFormValid)
+    {
         if (SubmitButton != null)
         {
             SubmitButton.IsEnabled = isFormValid;
             SubmitButton.BackgroundColor = isFormValid 
                 ? Colors.Orange 
+                : Color.FromArgb("#5c5c5f");
+            SubmitButton.TextColor = isFormValid 
+                ? Colors.White 
                 : Color.FromArgb("#AEAEB2");
         }
-
-        ValidationWarningLabel?.IsVisible = !isFormValid;
     }
 
     private async void OnSubmitFormClicked(object sender, EventArgs e)
@@ -71,9 +85,7 @@ public partial class MainPage : ContentPage
         string teaName = TeaNameEntry.Text.Trim();
         string tastingDate = GetTastingDate();
 
-        var (isValid, errorMessage) = ValidateInputData(testerEmail, tastingDate);
-
-        if (!isValid)
+        if (!ValidateInputData(testerEmail, tastingDate, out string? errorMessage))
         {
             await DisplayAlertAsync("Ошибка ввода", errorMessage, "ОК");
             return;
@@ -96,22 +108,25 @@ public partial class MainPage : ContentPage
         await DisplayAlertAsync("Успех", "Форма успешно отправлена! Итоги дегустации можно увидеть ниже.", "Отлично");
     }
 
-    private (bool IsValid, string ErrorMessage) ValidateInputData(string email, string date)
+    private bool ValidateInputData(string email, string date, out string? errorMessage)
     {
         string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         if (!Regex.IsMatch(email, emailPattern))
         {
-            return (false, "Указан некорректный формат почты! Пример: example@mail.com");
+            errorMessage = "Указан некорректный формат почты! Пример: example@mail.com";
+            return false;
         }
 
         if (!Regex.IsMatch(date, @"^\d{2}\.\d{2}\.\d{4}$"))
         {
-            return (false, "Неверный формат даты! Используйте формат ДД.ММ.ГГГГ");
+            errorMessage = "Неверный формат даты! Используйте формат ДД.ММ.ГГГГ";
+            return false;
         }
 
         if (!DateTime.TryParseExact(date, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
         {
-            return (false, "Введена несуществующая дата! Проверьте правильность дней и месяцев.");
+            errorMessage = "Введена несуществующая дата! Проверьте правильность дней и месяцев.";
+            return false;
         }
 
         DateTime minDate = new (2026, 10, 1);
@@ -119,10 +134,12 @@ public partial class MainPage : ContentPage
 
         if (parsedDate < minDate || parsedDate > maxDate)
         {
-            return (false, "Дата сессии должна быть в диапазоне от 01.10.2026 до 31.12.2026!");
+            errorMessage = "Дата сессии должна быть в диапазоне от 01.10.2026 до 31.12.2026!";
+            return false;
         }
 
-        return (true, string.Empty);
+        errorMessage = null;
+        return true;
     }
 
     private string GetTastingDate()
@@ -141,8 +158,8 @@ public partial class MainPage : ContentPage
 
     private string GetSelectedTeaEffect()
     {
-        if (BodrostRadio.IsChecked) return "Бодрость";
-        if (FocusRadio.IsChecked) return "Концентрация";
+        if (BoostRadioButton.IsChecked) return "Бодрость";
+        if (ConcentrationRadioButton.IsChecked) return "Концентрация";
         return "Расслабление";
     }
 
@@ -182,15 +199,14 @@ public partial class MainPage : ContentPage
     private void OnClearFormClicked(object sender, EventArgs e)
     {
         ResetEntries();
-
-        HiddenDatePicker.Date = DateTime.Today;
+        SetCurrentDate();
 
         ScoreSlider.Value = 5;
 
         ResetPickers();
         ResetCheckBoxes();
 
-        BodrostRadio.IsChecked = true;
+        BoostRadioButton.IsChecked = true;
 
         ReviewEditor.Text = string.Empty;
 

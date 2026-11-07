@@ -23,7 +23,7 @@
             </HorizontalStackLayout>
 
             <Image 
-                Source="https://admin.thetea.ua/files/styles/blog_page_webp/public/blog/green-oolong-tea-bound-flower.jpg.webp?itok=l8evLHw8"
+                Source="tea_questionnaire.jpg"
                 Aspect="AspectFill"
                 HeightRequest="180"
                 HorizontalOptions="Fill"
@@ -42,38 +42,36 @@
                 RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto" 
                 RowSpacing="14" 
                 Margin="0,10,0,10">
+                
                 <Label Grid.Row="0" Grid.Column="0" Text="Дегустатор:" Style="{StaticResource FormLabelStyle}"/>
-                <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
-                   <Entry 
-                        x:Name="TesterNameEntry" 
-                        Placeholder="Ваше имя" 
-                        MaxLength="25" 
-                        Keyboard="Text"
-                        TextChanged="OnRequiredFieldsChanged"
-                        Style="{StaticResource FieldEntryStyle}"/>
-                </Border>
+                <Entry 
+                    Grid.Row="0" Grid.Column="1" 
+                    x:Name="TesterNameEntry" 
+                    Placeholder="Ваше имя" 
+                    MaxLength="25" 
+                    Keyboard="Text"
+                    TextChanged="OnRequiredFieldsChanged"
+                    Style="{StaticResource FieldEntryStyle}"/>
                 
                 <Label Grid.Row="1" Grid.Column="0" Text="Почта:" Style="{StaticResource FormLabelStyle}"/>
-                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
-                    <Entry 
-                        x:Name="TesterEmailEntry" 
-                        Placeholder="example@mail.com" 
-                        MaxLength="50" 
-                        Keyboard="Email"
-                        TextChanged="OnRequiredFieldsChanged"
-                        Style="{StaticResource FieldEntryStyle}"/> 
-                </Border>
+                <Entry 
+                    Grid.Row="1" Grid.Column="1" 
+                    x:Name="TesterEmailEntry" 
+                    Placeholder="example@mail.com" 
+                    MaxLength="50" 
+                    Keyboard="Email"
+                    TextChanged="OnRequiredFieldsChanged"
+                    Style="{StaticResource FieldEntryStyle}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" Text="Дата сессии:" Style="{StaticResource FormLabelStyle}"/>
                 <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*, Auto">
-                    <Border Grid.Column="0" Style="{StaticResource FieldBorderStyle}">
-                        <Entry 
-                            x:Name="DateEntry"
-                            Placeholder="ДД.ММ.ГГГГ"
-                            Keyboard="Telephone"
-                            MaxLength="10"
-                            Style="{StaticResource FieldEntryStyle}"/>
-                    </Border>
+                    <Entry 
+                        Grid.Column="0"
+                        x:Name="DateEntry"
+                        Placeholder="ДД.ММ.ГГГГ"
+                        Keyboard="Numeric"
+                        MaxLength="10"
+                        Style="{StaticResource FieldEntryStyle}"/>
 
                     <Border 
                         Grid.Column="1"
@@ -109,52 +107,53 @@
                 </Grid>
 
                 <Label Grid.Row="3" Grid.Column="0" Text="Сорт чая:" Style="{StaticResource FormLabelStyle}"/>
-                <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
-                    <Entry 
-                        x:Name="TeaNameEntry" 
-                        Placeholder="Например, Гекуро" 
-                        MaxLength="40" 
-                        Keyboard="Plain"
-                        TextChanged="OnRequiredFieldsChanged"
-                        Style="{StaticResource FieldEntryStyle}"/>
-                </Border>
+                <Entry 
+                    Grid.Row="3" Grid.Column="1" 
+                    x:Name="TeaNameEntry" 
+                    Placeholder="Например, Гекуро" 
+                    MaxLength="40" 
+                    Keyboard="Text"
+                    TextChanged="OnRequiredFieldsChanged"
+                    Style="{StaticResource FieldEntryStyle}"/>
 
                 <Label Grid.Row="4" Grid.Column="0" Text="Вид чая:" Style="{StaticResource FormLabelStyle}"/>
-                <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
-                    <Picker x:Name="TeaTypePicker" TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Выберите вид...</x:String>
-                                <x:String>Зелёный</x:String>
-                                <x:String>Черный</x:String>
-                                <x:String>Белый</x:String>
-                                <x:String>Улун</x:String>
-                                <x:String>Пуэр</x:String>
-                                <x:String>Тизан</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
-                </Border>
+                <Picker 
+                    Grid.Row="4" Grid.Column="1" 
+                    x:Name="TeaTypePicker" 
+                    Style="{StaticResource FieldPickerStyle}">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Выберите вид...</x:String>
+                            <x:String>Зелёный</x:String>
+                            <x:String>Черный</x:String>
+                            <x:String>Белый</x:String>
+                            <x:String>Улун</x:String>
+                            <x:String>Пуэр</x:String>
+                            <x:String>Тизан</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
 
                 <Label Grid.Row="5" Grid.Column="0" Text="Метод варки:" Style="{StaticResource FormLabelStyle}"/>
-                <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource FieldBorderStyle}">
-                    <Picker x:Name="BrewMethodPicker" TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Выберите метод...</x:String>
-                                <x:String>Китайский пролив</x:String>
-                                <x:String>Настаивание в чайнике</x:String>
-                                <x:String>Бумажный стаканчик</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
-                </Border>
+                <Picker 
+                    Grid.Row="5" Grid.Column="1" 
+                    x:Name="BrewMethodPicker" 
+                    Style="{StaticResource FieldPickerStyle}">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Выберите метод...</x:String>
+                            <x:String>Китайский пролив</x:String>
+                            <x:String>Настаивание в чайнике</x:String>
+                            <x:String>Бумажный стаканчик</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
 
                 <Label Grid.Row="6" Grid.Column="0" Text="Ваша оценка:" Style="{StaticResource FormLabelStyle}"/>
                 <VerticalStackLayout Grid.Row="6" Grid.Column="1" Spacing="2">
                     <Slider 
                         x:Name="ScoreSlider" 
-                        Minimum="1" 
+                        Minimum="0" 
                         Maximum="10" 
                         Value="5"
                         ThumbColor="Orange"
@@ -171,20 +170,20 @@
             <Label Text="Эффект от чаепития:" Style="{StaticResource FormLabelStyle}" Margin="0,5,0,2"/>
             <VerticalStackLayout Spacing="6" Margin="5,0,0,10">
                 <RadioButton 
-                    x:Name="BodrostRadio"
+                    x:Name="BoostRadioButton"
                     Content="Бодрость" 
                     GroupName="TeaEffect" 
                     Value="Бодрость" 
                     IsChecked="True"
                     TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
                 <RadioButton 
-                    x:Name="FocusRadio" 
+                    x:Name="ConcentrationRadioButton" 
                     Content="Концентрация" 
                     GroupName="TeaEffect" 
                     Value="Концентрация"
                     TextColor="{AppThemeBinding Light=#1C1C1E, Dark=#FFFFFF}"/>
                 <RadioButton 
-                    x:Name="RelaxRadio"
+                    x:Name="RelaxRadioButton"
                     Content="Расслабление" 
                     GroupName="TeaEffect" 
                     Value="Расслабление"
@@ -231,16 +230,15 @@
             </VerticalStackLayout>
 
             <Label Text="Дегустационные заметки:" Style="{StaticResource FormLabelStyle}" Margin="0,0,0,6"/>
-            <Border Style="{StaticResource FieldBorderStyle}">
-                <Editor 
-                    x:Name="ReviewEditor" 
-                    Placeholder="Опишите нотки послевкусия, терпкость, плотность..." 
-                    HeightRequest="90" 
-                    AutoSize="TextChanges" 
-                    MaxLength="300"
-                    TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
-                    PlaceholderColor="Gray"/>
-            </Border>
+            <Editor 
+                x:Name="ReviewEditor" 
+                Placeholder="Опишите нотки послевкусия, терпкость, плотность..." 
+                HeightRequest="90" 
+                AutoSize="TextChanges" 
+                MaxLength="300"
+                PlaceholderColor="Gray"
+                TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}"
+                BackgroundColor="{AppThemeBinding Light=#F2F2F7, Dark=#2C2C2E}"/>
 
             <Label 
                 x:Name="ValidationWarningLabel"
