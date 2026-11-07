@@ -71,6 +71,7 @@
                         Placeholder="ДД.ММ.ГГГГ"
                         Keyboard="Numeric"
                         MaxLength="10"
+                        TextChanged="OnDateTextChanged"
                         Style="{StaticResource FieldEntryStyle}"/>
 
                     <Border 

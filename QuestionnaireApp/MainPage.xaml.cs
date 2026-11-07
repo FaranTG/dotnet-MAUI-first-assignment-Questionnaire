@@ -4,6 +4,8 @@ namespace QuestionnaireApp;
 
 public partial class MainPage : ContentPage
 {
+    private static readonly int[] DateDotEditLengthValues = [3, 6];
+
     public MainPage()
     {
         InitializeComponent();
@@ -12,6 +14,34 @@ public partial class MainPage : ContentPage
         SetCurrentDate();
         ResetPickers();
         ValidateForm();
+    }
+
+    private void OnDateTextChanged(object? sender, TextChangedEventArgs e)
+    {
+        if (DateEntry == null || string.IsNullOrEmpty(e.NewTextValue))
+            return;
+
+        string oldText = e.OldTextValue ?? string.Empty;
+        string newText = e.NewTextValue;
+
+        bool isDeleting = newText.Length < oldText.Length;
+        bool isEditDotCase = DateDotEditLengthValues.Contains(newText.Length);
+
+        if (!isEditDotCase)
+            return;
+
+        string updatedText = isDeleting
+            ? newText[..^1]
+            : $"{newText[..^1]}.{newText[^1]}";
+
+        Dispatcher.Dispatch(() =>
+        {
+            if (DateEntry != null && DateEntry.Text == newText)
+            {
+                DateEntry.Text = updatedText;
+                DateEntry.CursorPosition = DateEntry.Text.Length;
+            }
+        });
     }
 
     private void OnThemeToggled(object? sender, ToggledEventArgs e)
