@@ -87,6 +87,10 @@
                         <Grid>
                             <Button 
                                 Text="📅"
+                                Padding="0"
+                                FontSize="16"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
                                 WidthRequest="45"
                                 HeightRequest="40"
                                 BackgroundColor="Transparent"
